@@ -8,6 +8,16 @@ import lombok.Setter;
  */
 
 public class MaximumSubarray {
+	
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    private static class mSA {
+        public int start; // start index of MSA
+        public int end; // end index of MSA (inclusive)
+        public int sum;  // sum of MSA
+    }
 
     /**
      * Recursive call to find maximum subarray of an array.
@@ -75,4 +85,14 @@ public class MaximumSubarray {
         // combines
         return new mSA(crossStart, crossEnd, crossLeftSum + crossRightSum);
     }
+
+    public static void main(String[] args){
+        int[] nums = new int[]{-2,1,-3,4,-1,2,1,-5,4};
+        mSA ret = MaximumSubarray.findMaxSubarray(nums, 0, nums.length-1);
+        System.out.println(ret.sum);
+
+        int[] nums2  = new int[]{1};
+        mSA ret2 = MaximumSubarray.findMaxSubarray(nums2, 0, nums2.length-1);
+        System.out.println(ret2.sum);
+    }	
 }
