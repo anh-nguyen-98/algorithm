@@ -7,11 +7,12 @@ Algorithm is a repository of implementations for classic algorithms:
 * Dynamic programming
 * String 
 
-I update the repo as I learn. 
+I will update the repo as I learn. 
 
-# Contribution
-Author: Nguyen Hoang Nam Anh 
+# Authors
+Nguyen Hoang Nam Anh 
 
+# Contributing
 Feedback is always welcome. For major changes, please feel free to  open an issue to discuss what you would like to change.
 
 # License 
