@@ -5,7 +5,10 @@ public class UFClient {
         while (!StdIn.isEmpty()){
             int p = StdIn.readInt();
             int q = StdIn.readInt();
-            if ()
+            if (!uf.connected(p, q)){
+                uf.union(p, q);
+                StdOut.println (p + " " + q);
+            }
         }
 
     }
