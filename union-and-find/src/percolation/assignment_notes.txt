@@ -1,0 +1,5 @@
+- blocked site: 
+- open site: 
+- full site: open site that can be connected to an open site in the top row 
+via a chain of neighboring (left, right, up, down) open sites
+- percolates: full sites at the bottom <=> continuous open sites from bottom to top
