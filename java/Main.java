@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Main {
     public static int pushtoback(List<Integer> nums) {
         // Write your code here
@@ -61,6 +62,9 @@ public class Main {
         candies.add(4);
 
         System.out.println(trickortreat(candies));
+
+        
+
 
 
     }
