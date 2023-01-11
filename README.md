@@ -3,7 +3,7 @@
 Repo for practicing algorithm & data structures problems.
 
 
-The problems belong to these topics below:
+The problems belong to these topics:
 
 1. Arrays & Strings
 2. Sorting
