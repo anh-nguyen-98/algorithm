@@ -29,31 +29,10 @@ def main():
 
     # print(knapsack(w, v, 5))
 
-    points = [-1.2,-1.0,-0.2,0.1,0.2,0.4,1.6,1.7,1.9,2.0]
-    distance(points=points)
-    # for i in range(1, len(points)):
-    #     print (f'[{points[i]}, {points[i-1]}]: {round(abs(points[i] - points[i-1]),2)}')
 
 
 
-def distance(points):
-    dist = [[0 for j in range(len(points))] for i in range(len(points))]
-    header = "    "
-    for i in range(len(points)):
-        header += f'{points[i]:.2f}\t'
-    print (header)
-    print ()
-    for i in range(len(points) -1):
-        for j in range (i+1, len(points)):
-            d = abs(points[i] - points[j])
-            dist[i][j] = d
-            dist[j][i] = d
-    
-    for i in range(len(points)):
-        row = f'{points[i]}: '
-        for j in range(len(points)):
-            row +=  f'{dist[i][j]:.2f}\t'
-        print (row)
+
 
     
 # Press the green button in the gutter to run the script.

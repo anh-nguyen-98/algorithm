@@ -1,8 +1,7 @@
 
-
-public class TreeClient{
+public class BinarySearchTreeClient{
     public static void main (String[] args){
-        Tree testTree = new Tree();
+        BinarySearchTree testTree = new BinarySearchTree();
         testTree.add(3);
         testTree.add(5);
         testTree.add(7);

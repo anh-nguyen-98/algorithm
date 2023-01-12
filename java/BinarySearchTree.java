@@ -1,4 +1,4 @@
-public class Tree{
+public class BinarySearchTree{
     private class TreeNode{
         public int value;
         public TreeNode left;
@@ -15,7 +15,7 @@ public class Tree{
     }
 
     private TreeNode root;
-    public Tree(){
+    public BinarySearchTree(){
         this.root = null;
     }
 
