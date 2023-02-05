@@ -119,3 +119,35 @@ def max_subarray (nums):
 nums = [5, 4, -1, 7, 8]
 
 # max_subarray(nums=nums)
+
+
+"""
+Given an array of pots of coins, 2 players A and B, each player takes turn
+to pick up gold from the front or the end. Find the best number of coins
+A can pick up, given that B tries to minimize the number of coins that A can get.
+
+Input: array of pots of coins A
+Output: the most number of coins A can pick up
+"""
+
+def bestStrategy(coins):
+    n = len(coins)
+    result = [[0] * n for i in range(n)]
+    for i in range(n-1, -1, -1):
+        for j in range(i, n):
+            if i == j:
+                result[i][j] = coins[i]
+            
+            elif j - i == 1:
+                result[i][j] = max(coins[i], coins[j])
+            
+            else:
+                result[i][j]  = max(coins[i] + min(result[i+2][j], result[i+1][j-1]), 
+                                    coins[j] + min(result[i+1][j-1], result[i][j-2]))
+    
+    print (result[0][n-1])
+
+
+bestStrategy([4, 6, 2, 3])
+bestStrategy([6, 1, 4, 9, 8, 5])
+
