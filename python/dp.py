@@ -148,6 +148,106 @@ def bestStrategy(coins):
     print (result[0][n-1])
 
 
-bestStrategy([4, 6, 2, 3])
-bestStrategy([6, 1, 4, 9, 8, 5])
+# bestStrategy([4, 6, 2, 3])
+# bestStrategy([6, 1, 4, 9, 8, 5])
 
+'''
+Cherry pickup
+https://leetcode.com/problems/cherry-pickup/
+'''
+def get_neighbor_max_cherry(max_cherry, i, j):
+    n = len(max_cherry)
+    if i < 0 or j < 0 or i >= n or j >= n:
+        return 0
+    return max_cherry[i][j]
+
+def cherryPickup():
+    ret = 0
+    # grid: nxn grid of int 0, 1, -1
+    # grid = [
+    #     [0, 1, -1],
+    #     [1, 0, -1],
+    #     [1, 1, 1]
+    # ]
+    # grid = [
+    #     [1, 1, -1],
+    #     [1, -1, 1],
+    #     [-1, 1, 1]
+    # ]
+    grid = [[1,1,1,1,0,0,0],[0,0,0,1,0,0,0],[0,0,0,1,0,0,1],[1,0,0,1,0,0,0],[0,0,0,1,0,0,0],[0,0,0,1,0,0,0],[0,0,0,1,1,1,1]]
+    n = len(grid)
+    max_cherry = [[0 for j in range (n)] for i in range(n)]
+    # print (max_cherry)
+
+    # collect from (0, 0) to (n-1)(n-1)
+    for i in range (n-1, -1, -1):
+        for j in range(n-1, -1, -1):
+            if grid[i][j] == -1:
+                max_cherry[i][j] = -1
+            else:
+                neighbor_max_cherry = max(get_neighbor_max_cherry(max_cherry, i, j + 1), # right
+                                    get_neighbor_max_cherry(max_cherry, i+1, j)) # down
+                if neighbor_max_cherry == -1:
+                    max_cherry[i][j] = -1
+                else:
+                    max_cherry[i][j] = grid[i][j] + neighbor_max_cherry
+            # print (max_cherry[i][j])
+
+    # check number of maximum cherries collected 
+
+    print (max_cherry[0][0])
+    # for i in range(n):
+    #     row = ''
+    #     for j in range(n):
+    #         row += f'{max_cherry[i][j]} '
+    #     print (row)
+
+    if max_cherry[0][0] == -1:
+        ret = 0
+
+    first_round  = max_cherry[0][0]
+    # set 0 to chosen cell
+
+    if max_cherry[0][0] > 0:
+        i = 0
+        j = 0
+        while not (i >= n or j >= n):
+            tmp = grid[i][j]
+            grid[i][j] = 0
+            neighbor_max_cherry = max_cherry[i][j] - tmp
+            # check right neighbor
+            if neighbor_max_cherry == get_neighbor_max_cherry(max_cherry, i, j+1):
+                j = j + 1
+            # check down neighbor
+            elif neighbor_max_cherry == get_neighbor_max_cherry(max_cherry, i+1, j):
+                i = i + 1
+    
+    # for i in range(n):
+    #     row = ''
+    #     for j in range(n):
+    #         row += f'{grid[i][j]} '
+    #     print (row)
+
+    # collect from (n-1)(n-1) to (0, 0)
+    for i in range (n):
+        for j in range(n):
+            if grid[i][j] == -1:
+                max_cherry[i][j] = -1
+            else:
+                neighbor_max_cherry = max(get_neighbor_max_cherry(max_cherry, i, j - 1), # left
+                                    get_neighbor_max_cherry(max_cherry, i-1, j)) # up
+                if neighbor_max_cherry == -1:
+                    max_cherry[i][j] = -1
+                else:
+                    max_cherry[i][j] = grid[i][j] + neighbor_max_cherry
+    
+
+
+    print (first_round + max_cherry[n-1][n-1])
+    
+
+
+cherryPickup()
+
+
+ 
