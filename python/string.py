@@ -13,39 +13,62 @@ def is_one_edit_away(s1, s2):
 
     return False
 
+def get_smallest_non_zero_digit(digit_count):
+    for i in range(1, 10):
+        if digit_count[i] > 0:
+            return i
+    return 0
+
 def get_smallest_special_number(s):
-    levels = [
-        {"z": ("zero", 0), "w": ("two", 2), "u": ("four", 4), "x": ("six", 6), "g": ("eight", 8)},
-        {"h": ("three", 3), "f": ("five", 5), "s": ("seven", 7)},
-        {"o": ("one", 1), "i": ("nine", 9)}
-    ] 
-    count = [0 for i in range(26)]
+    # levels = [
+    #     {"z": ("zero", 0), "w": ("two", 2), "u": ("four", 4), "x": ("six", 6), "g": ("eight", 8)},
+    #     {"h": ("three", 3), "f": ("five", 5), "s": ("seven", 7)},
+    #     {"o": ("one", 1), "i": ("nine", 9)}
+    # ]
+    digits_with_unique_char = {'z': 0, 'w': 2, 'u': 4, 'x': 6, 'g': 8}
+    
+
+    # char_count 
+    char_count = [0 for i in range(26)]
     for char in s:
-        count[ord(char) - 97] += 1
+        char_count[ord(char) - 97] += 1
 
-    result = []
-    for level in levels:
-        for sign in level:
-            sign_id = ord(sign) - 97
-            if count[sign_id] > 0:
-                word = level[sign][0]
-                number = level[sign][1]
-                occurences = count[sign_id]
-                for i in range(occurences):
-                    result.append(number)
-                for char in word:
-                    count[ord(char) - 97] -= occurences
+    # digit count
+    digit_count = [0 for i in range(11)]
 
-    result = sorted(result)
-    smallest_non_zero = -1
-    for num in result:
-        if num > 0:
-            smallest_non_zero = num
-            break
-    if smallest_non_zero > 0:
-        result.remove(smallest_non_zero)
-        result.insert(0, smallest_non_zero)
-        result =  ''.join(map(str, result))
+    # count occurences of digits with unique character
+    for char in digits_with_unique_char:
+        char_index = ord(char) - 97
+        num = digits_with_unique_char[char]
+        digit_count[num] = char_count[char_index]
+    
+    # count occurrences of other digits
+    # t[h]ree, eig[h]t
+    digit_count[3] = char_count[ord('h') - 97] - digit_count[8]
+    # [f]ive, [f]our
+    digit_count[5] = char_count[ord('f') - 97] - digit_count[4]
+    # [s]even, [s]ix
+    digit_count[7] = char_count[ord('s') - 97] - digit_count[6]
+    # [o]ne, zer[o], tw[o], f[o]ur
+    digit_count[1] = char_count[ord('o') - 97] - (digit_count[0] + digit_count[2] + digit_count[4])
+    # n[i]ne, f[i]ve, e[i]ght, s[i]x
+    digit_count[9] = char_count[ord('i') - 97] - (digit_count[5] + digit_count[8] + digit_count[6])
+
+    smallest_special_number = ''
+    # get smallest non-zero
+
+    smallest_non_zero_digit = get_smallest_non_zero_digit(digit_count)
+    if smallest_non_zero_digit == 0:
+        smallest_special_number = '0'
     else:
-        result = '0'
-    return result
+        smallest_special_number = str(smallest_non_zero_digit)
+        digit_count[smallest_non_zero_digit] -= 1
+        digit_list = []
+        for num, num_count in enumerate(digit_count):
+            digit_list.extend([str(num)] * num_count)
+        smallest_special_number += ''.join(digit_list)            
+    return smallest_special_number
+
+shuffled_string = 'ttnrwoooeeefurh'
+
+print (get_smallest_special_number(shuffled_string))
