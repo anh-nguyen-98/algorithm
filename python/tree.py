@@ -67,7 +67,46 @@ class BinaryTree:
         if abs(height_left_subtree - height_right_subtree) > 1:
             return -1
         return max(height_right_subtree, height_left_subtree) + 1
-    
+
+    def common_ancestor(self, root: BinaryTreeNode, p: BinaryTreeNode, q: BinaryTreeNode):
+        '''
+        Result: [node (LCA/p/q/None), isAncestor]
+        '''
+        class Result:
+            def __init__(self, node=None, is_ancestor=False) -> None:
+                self.node: BinaryTreeNode = node
+                self.is_ancestor: bool = is_ancestor
+        
+        def common_ancestor_helper(root: BinaryTreeNode, p: BinaryTreeNode, q: BinaryTreeNode):
+            if root is None:
+                return Result()
+
+            if root.value == p.value or root.value == q.value:
+                result_x: Result = common_ancestor_helper(root.left, p, q)
+                if result_x.node is not None:
+                    return Result(root, True)
+                result_y: Result = common_ancestor_helper(root.right, p, q)
+                if result_y.node is not None:
+                    return Result(root, True)
+                return Result(root, False)
+            result_x: Result = common_ancestor_helper(root.left, p, q)
+            if result_x.is_ancestor:
+                return result_x
+            result_y: Result = common_ancestor_helper(root.right, p, q)
+            if result_y.is_ancestor:
+                return result_y
+            if result_x.node is not None and result_y.node is not None:
+                return Result(root, True)
+            if result_x.node is None and result_y.node is None:
+                return Result()
+            node = result_x.node if result_x.node is not None else result_y.node
+            return Result(node, False)
+        
+        result: Result = common_ancestor_helper(root, p, q)
+        return result.node
+        
+        
+
     def lowestCommonAncestor(self, p, q):
         _, LCA = self.findNode(root, [p, q])
         return LCA.value
@@ -79,18 +118,15 @@ class BinaryTree:
             q = unfound_nodes[1]
             if root is None:
                 return [False, False], None
-            if root.value == p:
-                # search for q in tree
-                is_found, LCA = self.findNode(root, [q])
+                
+            if root.value == p or root.value == q:
+                # search for the other in tree
+                other = q if root.value == p else p
+                is_found, LCA = self.findNode(root, [other])
                 if is_found[0]:
                     return [True, True], root
                 return [True, False], None
             
-            elif root.value == q:
-                is_found, LCA = self.findNode(root, [p])
-                if is_found[0]:
-                    return [True, True], root
-                return [False, True], None
             else:
                 # search 2 values in left branch
                 is_found, LCA = self.findNode(root.left, unfound_nodes)
@@ -99,18 +135,14 @@ class BinaryTree:
 
                 if is_p_found and is_q_found:
                     return is_found, LCA
-                if is_p_found and not is_q_found:
-                    # search q in right branch
-                    is_found, LCA = self.findNode(root.right, [q])
-                    if is_found[0]:
-                        return [True, True], root
-                    return [True, False], None
-                if not is_p_found and is_q_found:
-                    is_found, LCA = self.findNode(root.right, [p])
-                    if is_found[0]:
-                        return [True, True], root
-                    return [False, True], None
-                return self.findNode(root.right, unfound_nodes)
+                if not is_p_found and not is_q_found:
+                    return self.findNode(root.right, unfound_nodes)
+                
+                missing = q if is_p_found else p
+                is_found, LCA = self.findNode(root.right, [missing])
+                if is_found[0]:
+                    return [True, True], root
+                return [True, False], None              
             
         unfound_node = unfound_nodes[0]
         if root is None:
@@ -140,5 +172,6 @@ root.right.right = BinaryTreeNode(8)
 
 print (tree.to_string())
 
-print (tree.lowestCommonAncestor(5, 1))
+# print (tree.lowestCommonAncestor(5, 1))
 # root.right.right = BinaryTreeNode(15)
+print (tree.common_ancestor(root, BinaryTreeNode(5), BinaryTreeNode(1)))
