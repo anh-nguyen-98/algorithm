@@ -1,3 +1,6 @@
+# data files
+*.txt
+
 # Compiled class file
 *.class
 
