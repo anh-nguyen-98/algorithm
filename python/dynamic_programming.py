@@ -195,4 +195,63 @@ def cherryPickup(grid):
                             current_dp[c1][c2] = max_cherry_in_previous_step + grid[r1][c1] + grid[r2][c2]
         previous_dp = current_dp
         # current_dp = [[0 for c2 in range(n)]  for c1 in range(n)]
-    print (previous_dp[n-1][n-1])
+    return previous_dp[n-1][n-1]
+
+'''
+Given an array of non-negative integers and a target sum, find the subset that sum to target sum.
+Similar to knapsack 0-1 (choose or not choose item)
+'''
+def canSum(nums: list, target_sum: int):
+    # create table
+    can_sum = [[False for _ in range(target_sum +1)] for _ in range(len(nums) + 1)]
+
+    # mark True for column sum = 0
+    for _ in range(len(nums) + 1):
+        can_sum[_][0] = True
+    
+    # calculate canSum from list size 1 -> n
+    for nums_size in range(1, len(nums) + 1):
+        for sum_value in range(1, target_sum + 1):
+            # can_sum[i][j] = ?
+            num = nums[nums_size -1]
+            choose_num = False
+            not_choose_num = False
+            if num <= sum_value:
+                choose_num = can_sum[nums_size -1][sum_value - num]
+            not_choose_num = can_sum[nums_size -1][sum_value]
+            can_sum[nums_size][sum_value] = choose_num or not_choose_num
+    
+    # print subset
+    subset = []
+    if can_sum[len(nums)][target_sum]:
+        sum_value = target_sum
+        nums_size = len(nums)
+        while sum_value > 0:
+            # choose nums[i] or skip
+            num = nums[nums_size -1]
+            if can_sum[nums_size -1][sum_value - num]:
+                subset.insert(0, num)
+                sum_value -= num
+                nums_size -= 1
+            else:
+                nums_size -= 1
+            
+        
+    print (subset)
+
+    # # print can_sum
+    # repr = '\t'
+    # for i in range(target_sum +1):
+    #     repr += f'{i}\t'
+    # print (repr)
+    # for i in range(len(nums) + 1):
+    #     repr = f'{nums[i-1]}\t' if i > 0 else ' \t'
+    #     for j in range(target_sum +1):
+    #         repr += f'{can_sum[i][j]}\t'
+    #     print (repr)
+
+    return False
+
+nums = [1, 2, 3]
+target_sum = 2
+canSum(nums, target_sum)
